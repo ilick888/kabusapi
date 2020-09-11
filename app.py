@@ -30,6 +30,7 @@ def token(password):
         return content
     except Exception as e:
         print(e)
+        return "error"
 
 #東証銘柄の株価情報を取得
 @app.route('/api/board/<int:code>')
@@ -40,6 +41,7 @@ def board(code):
     req.add_header('X-API-KEY', session['token'].get('Token'))
 
     try:
+        req.add_header('X-API-KEY', session['token'].get('Token'))
         with urllib.request.urlopen(req) as res:
             print(res.status, res.reason)
             for header in res.getheaders():
@@ -53,10 +55,16 @@ def board(code):
         return content
     except Exception as e:
         print(e)
+        return "error"
 
 @app.route('/')
 def hello():
-    return session['token'].get('Token')
+    try:
+        token = session['token'].get('Token')
+        return token
+    except Exception as e:
+        print(e)
+        return "error"
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000)
+    app.run(host='0.0.0.0', port=80)
